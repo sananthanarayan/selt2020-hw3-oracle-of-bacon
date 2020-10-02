@@ -111,6 +111,7 @@ class OracleOfBacon
       end
     end
 
+    # Used this https://ruby-doc.org/stdlib-2.4.1/libdoc/rexml/rdoc/REXML/XPath.html to learn about XPath
     def parse_spellcheck_response
       # TODO: YOUR CODE HERE
       @type = :spellcheck
