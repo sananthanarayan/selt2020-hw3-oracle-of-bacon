@@ -11,20 +11,20 @@ describe OracleOfBacon do
       subject { @orb }
       it { should_not be_valid }
     end
-    describe 'when only From is specified', :pending => true do
+    describe 'when only From is specified' do
       subject { @orb.from = 'Carrie Fisher' ; @orb }
       it { should be_valid }
       its(:from) { should == 'Carrie Fisher' }
       its(:to)   { should == 'Kevin Bacon' }
     end
-    describe 'when only To is specified', :pending => true do
+    describe 'when only To is specified' do
       subject { @orb.to = 'Ian McKellen' ; @orb }
       it { should be_valid }
       its(:from) { should == 'Kevin Bacon' }
       its(:to)   { should == 'Ian McKellen'}
     end
-    describe 'when From and To are both specified', :pending => true do
-      context 'and distinct', :pending => true do
+    describe 'when From and To are both specified' do
+      context 'and distinct' do
         subject { @orb.to = 'Ian McKellen' ; @orb.from = 'Carrie Fisher' ; @orb }
         it { should be_valid }
         its(:from) { should == 'Carrie Fisher' }
@@ -42,19 +42,19 @@ describe OracleOfBacon do
       its(:type) { should == :unauthorized }
       its(:data) { should == 'unauthorized use of xml interface' }
     end
-    describe 'for a normal match', :pending => true do
+    describe 'for a normal match' do
       subject { OracleOfBacon::Response.new(File.read 'spec/graph_example.xml') }
       its(:type) { should == :graph }
       its(:data) { should == ['Carrie Fisher', 'Under the Rainbow (1981)',
                               'Chevy Chase', 'Doogal (2006)', 'Ian McKellen'] }
     end
-    describe 'for a normal match (backup)', :pending => true do
+    describe 'for a normal match (backup)' do
       subject { OracleOfBacon::Response.new(File.read 'spec/graph_example2.xml') }
       its(:type) { should == :graph }
       its(:data) { should == ["Ian McKellen", "Doogal (2006)", "Kevin Smith (I)",
                               "Fanboys (2009)", "Carrie Fisher"] }
     end
-    describe 'for a spellcheck match', :pending => true do
+    describe 'for a spellcheck match' do
       subject { OracleOfBacon::Response.new(File.read 'spec/spellcheck_example.xml') }
       its(:type) { should == :spellcheck }
       its(:data) { should have(34).elements }
@@ -72,7 +72,7 @@ describe OracleOfBacon do
       its(:data) { should match /There is no link/i }
     end
   end
-  describe 'constructing URI', :pending => true do
+  describe 'constructing URI' do
     subject do
       oob = OracleOfBacon.new('fake_key')
       oob.to = '3%2 "a'
@@ -85,7 +85,7 @@ describe OracleOfBacon do
     it { should match /b=George\+Clooney/ }
     it { should match /a=3%252\+%22a/ }
   end
-  describe 'service connection', :pending => true do
+  describe 'service connection' do
     before(:each) do
       @oob = OracleOfBacon.new
       allow(@oob).to receive(:valid?).and_return(true)
@@ -105,12 +105,17 @@ describe OracleOfBacon do
       body = File.read 'spec/unauthorized_access.xml'
       # TODO: YOUR CODE HERE
       # HINT: OpenURI::HTTPError.new('My 403 response',nil)
-      expect(0).to eq(1) # Replace with meaningful test
+      OpenURI::HTTPError.new('My 403 response', body)
+      # expect(0).to eq(1) # Replace with meaningful test
     end
     it 'instantiates a Response object and assign to @response' do
       body = File.read 'spec/graph_example.xml'
       # TODO: YOUR CODE HERE
-      expect(0).to eq(1) # Replace with meaningful test
+      @oob = OracleOfBacon.new
+      stub_request(:get, %r(http://oracleofbacon\.org) ).to_return( :body => body)
+      expect(OracleOfBacon::Response).to receive(:new).with(body)
+      @oob.find_connections
+      # expect(0).to eq(1) # Replace with meaningful test
     end
   end
 

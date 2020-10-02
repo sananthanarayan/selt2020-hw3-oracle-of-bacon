@@ -1,11 +1,12 @@
 ## See defaults at
 # https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
 
-Rails:
-  Enabled: true
+#Rails:
+  #Enabled: true
+require: rubocop-rails
 
 # Commonly used screens these days easily fit more than 80 characters.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120  #default is 80
   # To make it possible to copy or click on URIs in the code, we allow lines
   # containing a URI to be longer than Max.
